@@ -1,0 +1,23 @@
+section{
+    background-color: rgb(197, 191, 191);
+}
+
+.ms-card{
+    background-color: rgb(157, 145, 145);
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 20px;
+    width: 20%;
+    margin: auto;
+    transition: transform 0.2s; 
+    
+    img{
+        height: 250px;
+        width: 100%;
+        border-radius: 10px;
+    }
+}
+
+.ms-card:hover{
+    transform: scale(1.03);
+}
