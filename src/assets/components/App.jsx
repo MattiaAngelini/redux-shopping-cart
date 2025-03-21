@@ -3,31 +3,52 @@ import { Link } from 'react-router-dom';
 import '../styles/App.scss';
 import { useGetProductsQuery } from '../redux/storageSlice.js';
 import { useDispatch, useSelector } from 'react-redux';
-import { addItem, removeItem } from '../redux/itemsSlice.js';
+import { addItemOnStore, buyItem } from '../redux/itemsSlice.js';
+import {addItemCart} from '../redux/cartSlice.js';
 
 function App() {
   const dispatch = useDispatch();
   const { data: apiItems, isLoading } = useGetProductsQuery();
-  const localItems = useSelector((state) => state.items);
 
-  const handleRemoveItem = (itemId) => {
+  //magazzino(store)
+  const localItems = useSelector((state) => state.items);
+  
+  //carrello
+  const cart = useSelector((state) => state.cart)
+
+  const handlebuyItem = (itemId, item) => { //gestire anche carrello
     console.log(itemId);
-    dispatch(removeItem(itemId));
+    dispatch(buyItem(itemId));
+    dispatch(addItemCart(item))
   };
 
+  //funzione che prende tutti gli elementi selezionati dallo store e
+  // crea un oggetto con chiave:titolo e valore:counter, per creare conteggio elementi nel carrello
+  const filterCart = (array) => {
+    let counts = {}; // Oggetto per contare i titoli
+    array.forEach(item => {
+      if (item.title) {
+        counts[item.title] = (counts[item.title] || 0) + 1;
+      }
+    });
+    // Restituiamo un array di oggetti con `title` e `count`
+    return Object.keys(counts).map(title => ({ title, count: counts[title] }));
+  };
+  
   // Sincronizza i dati di RTK Query con il reducer tradizionale
   useEffect(() => {
     if (apiItems) {
       apiItems.forEach(item => {
-        dispatch(addItem(item));
+        dispatch(addItemOnStore(item));
       });
     }
   }, [apiItems, dispatch]);
 
   //verifica lo stato aggiornato
   useEffect(() => {
-    console.log( localItems);
-  }, [localItems]);
+    console.log( localItems, cart);
+    filterCart(cart)
+  }, [localItems, cart]);
 
 
   return (
@@ -36,11 +57,14 @@ function App() {
         <div className='d-flex justify-content-between'>
           <h1 className='text-center'>Prodotti</h1>
           <div className='cart mx-5 mt-3'>
-            <div>
-              <div>Articolo:</div>
-              <div>Prezzo:</div>
-              <div>Pezzi acquistati:</div>
-            </div>
+          <div>
+            <h4>ARTICOLI NEL CARRELLO</h4>
+            {filterCart(cart).map((product, index) => (
+              <div key={index}>
+                <span><strong>{product.title}</strong></span> <span> x{product.count}</span>
+              </div>
+            ))}
+          </div>
             <div>TOTALE CARRELLO:</div>
           </div>
         </div>
@@ -54,10 +78,10 @@ function App() {
                 <p className="card-text">Prezzo: {product.price}</p>
                 <p className="card-text">Pezzi disponibili: {product.rating.count}</p>
                 <button
-                  onClick={() => handleRemoveItem(product.id)}
-                  className="btn btn-danger"
+                  onClick={() => handlebuyItem(product.id, product)}
+                  className="btn btn-success"
                 >
-                  RIMUOVI DAL CARRELLO
+                  ACQUISTA
                 </button>
               </div>
             </div>

@@ -4,10 +4,10 @@ const itemsSlice = createSlice({
   name: 'items',
   initialState: [],
   reducers: {
-    addItem: (state, action) => {
+    addItemOnStore: (state, action) => {
       state.push(action.payload);
     },
-    removeItem: (state, action) => {
+    buyItem: (state, action) => {
       const itemId = action.payload; // id dell'item da modificare
       const itemIndex = state.findIndex(item => item.id === itemId); // Trova l'indice dell'item nello stato
 
@@ -30,5 +30,5 @@ const itemsSlice = createSlice({
   },
 });
 
-export const { addItem, removeItem, updateItem } = itemsSlice.actions;
+export const { addItemOnStore, buyItem, updateItem } = itemsSlice.actions;
 export default itemsSlice.reducer;
