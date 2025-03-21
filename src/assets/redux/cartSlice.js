@@ -9,7 +9,7 @@ const cartSlice = createSlice({
     },
 
     removeItemCart: (state, action) => {
-     
+     state.pop(action.payload)
     },
   },
 });

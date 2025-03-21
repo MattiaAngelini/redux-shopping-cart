@@ -4,28 +4,36 @@ import '../styles/App.scss';
 import { useGetProductsQuery } from '../redux/storageSlice.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { addItemOnStore, buyItem } from '../redux/itemsSlice.js';
-import {addItemCart} from '../redux/cartSlice.js';
+import {addItemCart, removeItemCart} from '../redux/cartSlice.js';
 
 function App() {
   const dispatch = useDispatch();
   const { data: apiItems, isLoading } = useGetProductsQuery();
   //magazzino(store)
   const localItems = useSelector((state) => state.items);
-  
   //carrello
   const cart = useSelector((state) => state.cart)
 
+  //tasto acquista
   const handlebuyItem = (itemId, item) => { //gestire anche carrello
     console.log(itemId);
     dispatch(buyItem(itemId));
     dispatch(addItemCart(item))
   };
 
-  //funzione che prende tutti gli elementi selezionati dallo store e
+  //tasto elimina del carrello
+  const deleteItem = (product) => {
+    const originalItem = cart.find(item => item.title === product.title);
+    if (originalItem) {
+      dispatch(removeItemCart(originalItem)); // Rimuovi l'oggetto da carrello
+      dispatch(addItemOnStore(originalItem)); // Aggiungi l'oggetto al magazzino
+    }
+  };
+
+  // Creazione oggetto per render carrello: prende tutti gli elementi selezionati dallo store e
   // crea un oggetto con title: titolo item, count :numero pezzi con stesso titolo, price: prezzo item
   const filterCart = (array) => {
-    let counts = {}; // Oggetto per contare i titoli e salvare il prezzo
-
+    let counts = {}; 
     array.forEach(item => {
         if (!counts[item.title]) {
           counts[item.title] = { count: 1, price: item.price }; // Salviamo il prezzo unitario
@@ -41,9 +49,9 @@ function App() {
     }));
   };
 
+  //totale
   const totalCart = (array) =>{
     let result = 0
-
     for (let i = 0; i < array.length; i++) {
       result = result + array[i].price
     }
@@ -68,44 +76,54 @@ function App() {
   return (
     <>
       <main className='d-flex'>
-        <section className='d-flex flex-wrap gap-1 justify-content-center p-5'>
-          {localItems?.map((product, index) => (
+        <section>
+          <h1 className='text-center p-3'>My Shop</h1>
+       <div className='d-flex flex-wrap gap-1 justify-content-center'>
+       {localItems?.map((product, index) => (
             <div key={`${product.id}-${index}`} className="ms-card m-3">
               <img className='img-fluid' src={product.image} alt={product.title} />
               <div className="card-body">
                 <h5 className="card-title">{product.title}</h5>
                 <p className="card-text">Prezzo: {product.price} €</p>
                 <p className="card-text">Pezzi disponibili: {product.rating.count}</p>
-                <button
-                  onClick={() => handlebuyItem(product.id, product)}
-                  className="btn btn-success"
-                >
-                  ACQUISTA
-                </button>
+                <div className='d-flex justify-content-center'>
+                  <button
+                    onClick={() => handlebuyItem(product.id, product)}
+                    className="btn btn-success"
+                  >
+                    ACQUISTA
+                   </button>
+                </div>
+              
               </div>
             </div>
           ))}
+       </div>
+      
         </section>
-
         <aside>
-        <div>
-            <h4>CARRELLO</h4>
-            {filterCart(cart).map((product, index) => (
-              <div key={index}>
-                <div><strong>{product.title}</strong></div>  
-                <span> x{product.count}</span>  
-                <span> - Prezzo: €{product.price.toFixed(2)}</span>  
-              </div>
-            ))}
+          <div>
+            <div className='cart'>
+              <h4 className='text-center'>CARRELLO</h4>
+
+              {filterCart(cart).map((product, index) => (
+                <div className='itemCart m-1' key={index}>
+                  <div><strong>{product.title}</strong></div>  
+                  <div className='d-flex justify-content-between'>
+                    <span> - Prezzo: €<strong>{product.price.toFixed(2)}</strong></span> 
+                    <span> x<strong>{product.count}</strong></span> 
+                  </div>
+                  <button  onClick={() => deleteItem(product)} className='btn btn-danger'>Rimuovi</button> 
+                </div>
+              ))}
+            </div>
+
+              <div className='mt-3'><b>TOTALE: {totalCart(cart)} €</b></div>
+              <nav className='mt-3'>
+                <Link to={`/Cart`}>VAI AL CARRELLO</Link>
+              </nav>
           </div>
-
-            <div className='mt-3'><b>TOTALE: {totalCart(cart)} €</b></div>
-            <nav className='mt-3'>
-               <Link to={`/Cart`}>VAI AL CARRELLO</Link>
-            </nav>
-
         </aside>
-   
       </main>
     </>
   );

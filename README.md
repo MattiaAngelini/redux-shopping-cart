@@ -1,12 +1,33 @@
-# React + Vite
+#React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+My Shop - Esercitazione Redux Toolkit e RTK Query
+Descrizione del Progetto
+Questa esercitazione è un'applicazione di e-commerce chiamata My Shop, che utilizza Redux Toolkit e RTK Query per gestire lo stato globale e le chiamate API. L'applicazione permette di:
 
-Currently, two official plugins are available:
+Visualizzare i prodotti disponibili nel magazzino.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Aggiungere prodotti al carrello.
 
-## Expanding the ESLint configuration
+Rimuovere prodotti dal carrello.
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Aggiornare il conteggio dei prodotti nel magazzino e nel carrello.
+
+Funzionalità Principali
+Gestione del Magazzino: I prodotti vengono caricati da un'API esterna e memorizzati nello store di Redux.
+
+Carrello: I prodotti possono essere aggiunti e rimossi dal carrello. Il conteggio dei prodotti nel magazzino e nel carrello viene aggiornato dinamicamente.
+
+RTK Query: Le chiamate API vengono gestite tramite RTK Query, che si occupa automaticamente della cache e del fetching dei dati.
+
+Interfaccia Utente: L'interfaccia è semplice e intuitiva, con una sezione per visualizzare i prodotti e una per gestire il carrello.
+
+Tecnologie Utilizzate
+React: Libreria JavaScript per la costruzione dell'interfaccia utente.
+
+Redux Toolkit: Libreria per la gestione dello stato globale.
+
+RTK Query: Estensione di Redux Toolkit per la gestione delle chiamate API.
+
+React Router: Per la navigazione tra le pagine.
+
+Bootstrap: Per lo stile e il layout dell'applicazione.

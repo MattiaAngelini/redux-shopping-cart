@@ -7,6 +7,16 @@ section{
 aside{
     width: 20%;
     padding: 10px;
+    .cart{
+      
+        padding: 10px;
+    }
+
+    .itemCart{
+        background-color: rgb(169, 170, 169);
+        border-radius: 6px;
+        padding: 6px;
+    }
 }
 
 .ms-card{
