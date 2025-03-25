@@ -4,17 +4,13 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import App from './assets/components/App.jsx'
 import store from './assets/redux/store.js';
-import Cart from './assets/components/cart.jsx';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App></App>
   },
-  {
-    path: "/Cart",
-    element: <Cart></Cart>
-  },
+ 
 ])
 
 createRoot(document.getElementById('root')).render(

@@ -11,6 +11,7 @@ const itemsSlice = createSlice({
       if (itemIndex !== -1) {
         // Se l'item è già nel magazzino, incrementa il contatore
         state[itemIndex].rating.count += 1;
+        
       } else {
         // Se l'item non è nel magazzino, aggiungilo con count = 1
         state.push({ ...item, rating: { ...item.rating, count: action.payload.rating.count} });

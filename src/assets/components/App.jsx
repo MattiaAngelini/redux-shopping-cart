@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/App.scss';
 import { useGetProductsQuery } from '../redux/storageSlice.js';
@@ -16,7 +16,6 @@ function App() {
 
   //tasto acquista
   const handlebuyItem = (itemId, item) => { //gestire anche carrello
-    console.log(itemId);
     dispatch(buyItem(itemId));
     dispatch(addItemCart(item))
   };
@@ -24,6 +23,7 @@ function App() {
   //tasto elimina del carrello
   const deleteItem = (product) => {
     const originalItem = cart.find(item => item.title === product.title);
+    
     if (originalItem) {
       dispatch(removeItemCart(originalItem)); // Rimuovi l'oggetto da carrello
       dispatch(addItemOnStore(originalItem)); // Aggiungi l'oggetto al magazzino

@@ -9,7 +9,9 @@ const cartSlice = createSlice({
     },
 
     removeItemCart: (state, action) => {
-     state.pop(action.payload)
+      // Trova l'indice dell'elemento da rimuovere
+      const index = state.findIndex(item => item.title === action.payload.title);
+        state.splice(index, 1); // Rimuove l'elemento alla posizione trovata
     },
   },
 });
